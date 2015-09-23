@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>CorleyCloud - Angular in Cloud</title>
+
+		<meta name="description" content="AngularJS and AWS integration, cognito, dynamodb">
+		<meta name="author" content="Gianluca Arbezzano">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/corley/corley.css" id="theme">
+		<link rel="stylesheet" href="css/theme/corley/font-awesome.css">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+        <style>
+        .well {
+            background-color: #000;
+        }
+        </style>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+                    <h2><i class="fa fa-cloud"></i></h2>
+					<h1>AngularJS</h1>
+					<h2>on Cloud</h2>
+					<p>
+						AngularConf 2015
+					</p>
+				</section>
+				<section data-background="#fff">
+					<h2>Who I am?</h2>
+					<h2 class="fragment" data-fragment-index="1">Gianluca Arbezzano</h2>
+					<h4 class="fragment" data-fragment-index="1">@gianarb</h4>
+					<h4 class="fragment" data-fragment-index="2">from CorleyCloud</h4>
+					<h4 class="fragment" data-fragment-index="2"><img src="assets/corley.png" alt="" class="flat" ></h4>
+					<h4 class="fragment" data-fragment-index="3">CloudConf Ideator</h4>
+
+				</section>
+				<section>
+					<div  style="">
+						<h2>When you think "Infrastructure"</h2>
+					</div>
+				</section>
+
+				<section data-background="assets/currenct-infrastructure.png">
+				</section>
+
+				<section>
+					<div>
+						<h2>Think of word without SysAdmin</h2>
+					</div>
+				</section>
+				<section data-background="assets/happy.jpg">
+					<h2 class="fragment well" data-fragment-index="1">Great!</h2>
+				</section>
+
+
+				<section data-background="assets/currenct-infrastructure-nosys.png">
+				</section>
+
+				<section>
+					<h4>The mission:</h4>
+					<h2>build an application managed by AWS</h2>
+                    <img  class="fragment" data-fragment-index="1" src="assets/mrburns.jpeg" style="height:300px;"/>
+					<h4 class="fragment" data-fragment-index="1">to avoid sysadmin</h4>
+				</section>
+
+				<section data-background="assets/with-aws.png">
+				</section>
+
+				<section>
+                    <h2><i class="fa fa-lock"></i></h2>
+					<h4>Security Issues</h4>
+                    <div  class="fragment" data-fragment-index="1">
+                        <p>Without servers <br>where do you store private credentials?</p>
+                    </div>
+				</section>
+
+				<section>
+					<h4>Cognito identity</h4>
+                    <div  class="fragment" data-fragment-index="1">
+                        <p>Helps your client app to manage authentication <br>and it opens the doors of AWS world</p>
+                    </div>
+				</section>
+
+				<section>
+                    <img src="assets/cognito-1.png">
+				</section>
+
+                <section>
+                    <h3>in AngularJS</h3>
+                    <pre><code lang="javascript">
+// app/app.js
+.config([function() {
+  var creds = new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: 'us-east-1:0000000000000008c3c-5397a17ad174'
+  });
+  AWS.config.update({
+    region: 'us-east-1',
+    credentials: creds
+  });
+}]);
+                    </code></pre>
+                </section>
+
+
+                <section>
+                    <h3>in AngularJS</h3>
+                    <img src="assets/app-1.png">
+                    <a href="http://ng-newsletter.com/posts/aws-js-sdk.html">ng-newsletter.com/aws-js-sdk</a>
+                </section>
+
+				<section>
+                    <img src="assets/cognito-3.png">
+				</section>
+
+                <section>
+                    <h3>in AngularJS</h3>
+                    <pre><code lang="javascript">
+.directive('googleSignin', function() {
+  return {
+    restrict: 'A',
+    template: '<span id="signinButton"></span>',
+    replace: true,
+    scope: {
+      afterSignin: '&'
+    },
+    link: function(scope, ele, attrs) {
+        //  see ng-newsletter.com/posts/aws-js-sdk.html
+    }
+  };
+})
+
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>in AngularJS</h3>
+                    <pre><code lang="javascript">
+// app/view/view.tpl.html
+<p>This is the partial for view 1.</p>
+<h2>Signin to ngroad</h2>
+
+<div google-signin
+  client-id='3818201'
+  after-signin="signedIn(oauth)" data-user="user"></div>
+<pre>{{ user | json }}</pre>
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>in AngularJS</h3>
+                    <pre><code lang="javascript" data-trim>
+  $scope.signedIn = function(oauth) {
+    var creds = {
+      params: {}
+    };
+    $scope.user = oauth;
+    creds = AWS.config.credentials;
+    creds.params.Logins = {};
+    creds.params.Logins['accounts.google.com'] = oauth.id_token;
+    AWS.config.update({
+      credentials: creds
+    });
+    AWS.config.credentials.refresh(function(err){
+      if (err) {
+        console.log(err);
+      }
+    });
+  };
+
+                    </code></pre>
+                </section>
+
+				<section data-background="assets/secret-home.jpg">
+                    <p class="well fragment" data-fragment-index="1">Chamber of Secrets was open</p>
+				</section>
+
+				<section>
+                    <img src="assets/cognito-4.png">
+				</section>
+
+                <section>
+                    <h3>in AngularJS</h3>
+                    <img src="assets/app-2.png">
+                </section>
+
+				<section data-background="assets/city.jpg">
+                    <h2 class="fragment well" data-fragment-index="1">DynamoDB</h2>
+                    <p class="fragment well" data-fragment-index="2">
+                    is a fully managed NoSQL database service that erovides fast <br>and predictable performance <br>with seamless scalability
+                    </p>
+				</section>
+
+                <section>
+                    <h3>in AngularJS</h3>
+                    <img src="assets/dynamo-1.png">
+                </section>
+
+                <section>
+                    <h3>in AngularJS</h3>
+                    <img src="assets/dynamo-2.png">
+                </section>
+
+
+				<section>
+                    <h2>in AngularJS</h2>
+                    <pre><code lang="html">
+<p>This is the partial for view 1.</p>
+<h2>Signin to ngroad</h2>
+
+<div google-signin
+  client-id='38182010900-e5l22mddk7oliohktn747trqgsfau1rd'
+  after-signin="signedIn(oauth)" data-user="user"></div>
+<pre>{{ user | json }}</pre>
+
+<form ng-submit="send(item)">
+<input ng-model="item.title">
+<button type="submit">Save</button>
+</form>
+                    </code></pre>
+				</section>
+
+				<section>
+                    <h2>in AngularJS</h2>
+                    <pre><code lang="html">
+$scope.send = function(item) {
+    AWS.config.getCredentials(function(){
+      var dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+      dynamodb.putItem({
+        Item: {
+          "title": {"S": item.title}
+        },
+        TableName: "angular-conf"
+      }, function(err, data) {
+        if(err) { throw err; }
+      });
+    });
+};
+                    </code></pre>
+				</section>
+
+                <section>
+                    <h3>DynamoDB</h3>
+                    <img src="assets/dynamo-3.png">
+                </section>
+
+                <section>
+                    <h3>DynamoDB</h3>
+                    <img src="assets/dynamo-4.png">
+                </section>
+
+                <section>
+                    <h3>working on your data</h3>
+                    <div style="width:100%;clear:both;" class="fragment" data-fragment-index="1">
+                        <div style="width:50%;float:left">
+                            <img src="assets/info-hiding-horizontal.png">
+                        </div>
+                        <div style="width:50%;float:right">
+                            <p>Allow permission for single lines</p>
+                        </div>
+                    </div>
+
+                    <div style="clear:both;width:100%;" class="fragment" data-fragment-index="2">
+                        <div style="width:50%;float:left">
+                            <p>Allow permission for single columns</p>
+                        </div>
+                        <div style="width:50%;float:right">
+                            <img src="assets/info-hiding-vertical.png">
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>working on your data</h3>
+                    <pre style="width:100%;font-size: 0.45em;"><code lang="javascript" data-trim>
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:GetItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem"
+            ],
+            "Resource": ["arn:aws:dynamodb:us-west-2::table/GameScores"],
+            "Condition": {
+                "ForAllValues:StringEquals": {
+                    "dynamodb:LeadingKeys": ["${www.amazon.com:user_id}"]}
+            }
+        }
+    ]
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>Other AWS services</h3>
+                    <p class="fragment" data-fragmnet="1">SQS</p>
+                    <p class="fragment" data-fragmnet="2">S3</p>
+                    <p class="fragment" data-fragmnet="3">Cognito Sync</p>
+                    <p class="fragment" data-fragmnet="4"><i class="fa fa-cloud"></i><i class="fa fa-cloud"></i><i class="fa fa-cloud"></i></p>
+                    <a class="fragment" data-fragmnet="4" href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/index.html">docs.aws.amazon.com/AWSJavaScriptSDK</a>
+                </section>
+
+                <section>
+                    <h2>Thanks</h2>
+                    <a href="https://github.com/gianarb">github.com/gianarb</a>
+                </section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: false,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'concave', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+                    { src: "bower_components/jquery/dist/jquery.js" },
+                    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: 'plugin/zoom-js/zoom.js', async: true },
+                    { src: 'bower_components/corley-presenter/presenter.js', async: true },
+                    { src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
