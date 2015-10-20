@@ -15,11 +15,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/corley/corley.css" id="theme">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
 		<link rel="stylesheet" href="css/theme/corley/font-awesome.css">
 
 		<!-- Code syntax highlighting -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<link rel="stylesheet" href="css/github.css">
+
+		<link rel="stylesheet" href="css/mine.css">
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -31,9 +33,20 @@
 		</script>
 
         <style>
-        .well {
-            background-color: #000;
-        }
+            .reveal h3,
+            .reveal h4
+            {
+                color: #A6120D;
+            }
+            .reveal pre {
+                box-shadow: none
+            }
+            .reveal pre code {
+                padding: 0px;
+                background: none;
+                max-height: none;
+                color: inherit;
+            }
         </style>
 
 		<!--[if lt IE 9]>
@@ -49,14 +62,14 @@
 			<div class="slides">
 				<section>
                     <h2><i class="fa fa-cloud"></i></h2>
-					<h1>AngularJS</h1>
+                    <h1 class="angular">Angular<span>JS</span></h1>
 					<h2>on Cloud</h2>
 					<p>
 						AngularConf 2015
 					</p>
 				</section>
 				<section data-background="#fff">
-					<h2>Who I am?</h2>
+                    <h2 class="angular"><span>Who am I?</span></h2>
 					<h2 class="fragment" data-fragment-index="1">Gianluca Arbezzano</h2>
 					<h4 class="fragment" data-fragment-index="1">@gianarb</h4>
 					<h4 class="fragment" data-fragment-index="2">from CorleyCloud</h4>
@@ -66,7 +79,7 @@
 				</section>
 				<section>
 					<div  style="">
-						<h2>When you think "Infrastructure"</h2>
+                        <h2 class="angular">When you think <span>"Infrastructure"</span></h2>
 					</div>
 				</section>
 
@@ -75,7 +88,7 @@
 
 				<section>
 					<div>
-						<h2>Think of word without SysAdmin</h2>
+                        <h2 class="angular">Think of word <span>without SysAdmin</span></h2>
 					</div>
 				</section>
 				<section data-background="assets/happy.jpg">
@@ -88,7 +101,7 @@
 
 				<section>
 					<h4>The mission:</h4>
-					<h2>build an application managed by AWS</h2>
+                    <h2 class="angular">build an application managed by <span>AWS</span></h2>
                     <img  class="fragment" data-fragment-index="1" src="assets/mrburns.jpeg" style="height:300px;"/>
 					<h4 class="fragment" data-fragment-index="1">to avoid sysadmin</h4>
 				</section>
@@ -98,7 +111,7 @@
 
 				<section>
                     <h2><i class="fa fa-lock"></i></h2>
-					<h4>Security Issues</h4>
+                    <h4 class="angular"><span>Security Issues</span></h4>
                     <div  class="fragment" data-fragment-index="1">
                         <p>Without servers <br>where do you store private credentials?</p>
                     </div>
@@ -166,13 +179,13 @@
                     <h3>in AngularJS</h3>
                     <pre><code lang="javascript">
 // app/view/view.tpl.html
-<p>This is the partial for view 1.</p>
-<h2>Signin to ngroad</h2>
+&lt;p&gt;This is the partial for view 1.&lt;/p&gt;
+&lt;h2&gt;Signin to ngroad&lt;/h2&gt;
 
-<div google-signin
+&lt;div google-signin
   client-id='3818201'
-  after-signin="signedIn(oauth)" data-user="user"></div>
-<pre>{{ user | json }}</pre>
+  after-signin="signedIn(oauth)" data-user="user"&gt;&lt;/div&gt;
+&lt;pre&gt;{{ user | json }}&lt;/pre&gt;
                     </code></pre>
                 </section>
 
@@ -234,18 +247,18 @@
 				<section>
                     <h2>in AngularJS</h2>
                     <pre><code lang="html">
-<p>This is the partial for view 1.</p>
-<h2>Signin to ngroad</h2>
+&lt;p&gt;This is the partial for view 1.&lt;/p&gt;
+&lt;h2&gt;Signin to ngroad&lt;/h2&gt;
 
-<div google-signin
+&lt;div google-signin
   client-id='38182010900-e5l22mddk7oliohktn747trqgsfau1rd'
-  after-signin="signedIn(oauth)" data-user="user"></div>
-<pre>{{ user | json }}</pre>
+  after-signin="signedIn(oauth)" data-user="user"&gt;&lt;/div&gt;
+&lt;pre&gt;{{ user | json }}&lt;/pre&gt;
 
-<form ng-submit="send(item)">
-<input ng-model="item.title">
-<button type="submit">Save</button>
-</form>
+&lt;form ng-submit="send(item)"&gt;
+&lt;input ng-model="item.title"&gt;
+&lt;button type="submit"&gt;Save&lt;/button&gt;
+&lt;/form&gt;
                     </code></pre>
 				</section>
 
